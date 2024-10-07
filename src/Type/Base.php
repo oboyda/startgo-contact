@@ -43,15 +43,33 @@ class Base {
         }, $props_config);
     }
 
+    private function castProp($value, $cast='string'){
+        switch($cast){
+            case 'integer':
+                $value = intval($value);
+            case 'array_integer':
+                $value = is_array($value) ? array_map(function($item){ return $this->castProp($value, 'integer'); }, $value) : [];
+                break;
+            case 'float':
+                $value = floatval($value);
+            case 'array_float':
+                $value = is_array($value) ? array_map(function($item){ return $this->castProp($value, 'float'); }, $value) : [];
+                break;
+        }
+        return $value;
+    }
+
     private function populateProps(){
         if(!$this->id) return;
         foreach($this->props_config as $prop => $config){
             switch($config['type']){
                 case 'data':
                     $this->post_data[$prop] = property_exists($this->post, $prop) ? $this->post[$prop] : null;
+                    $this->post_data[$prop] = $this->castProp($this->post_data[$prop], $config['cast']);
                     break;
                 case 'meta':
                     $this->post_meta[$prop] = get_post_meta($this->id, $prop, true);
+                    $this->post_meta[$prop] = $this->castProp($this->post_meta[$prop], $config['cast']);
                     break;
             }
         }
