@@ -5,22 +5,29 @@ class Base {
 
     protected $id = 0;
     protected $post = null;
+    protected $post_type = 'post';
     protected $post_data = [];
     protected $post_meta = [];
     protected $props_config = [];
     protected $props_mutated = [];
 
-    public function __construct($post=null, $props_config=[]){
+    public function __construct($post=null, $post_type='post', $props_config=[]){
         $this->setPost($post);
-        $this->setPropsConfig($props_config);
+        $this->setPostType($post_type);
+        $this->setPropsConfig(array_merge($props_config, [
+            'post_status' => [
+                'type' => 'data'
+            ]
+        ]));
         $this->populateProps();
     }
-
     private function setPost($post){
         $this->post = is_a($post, 'WP_Post') ? $post : (is_int($post) ? get_post($post) : $post);
         $this->id = $this->post ? $this->post->ID : 0;
     }
-
+    private function setPostType($post_type){
+        $this->post_type = $post_type;
+    }
     private function setPropsConfig($props_config=[]){
         $this->props_config = array_map(function($config){
             return array_merge([
@@ -34,7 +41,6 @@ class Base {
             ], $config);
         }, $props_config);
     }
-
     private function castProp($value, $cast='string'){
         switch($cast){
             case 'integer':
@@ -50,7 +56,6 @@ class Base {
         }
         return $value;
     }
-
     private function populateProps(){
         if(!$this->id) return;
         foreach($this->props_config as $prop => $config){
@@ -78,13 +83,13 @@ class Base {
         $key = $this->getPropConfig($prop, 'key', $prop);
         switch($this->getPropConfig($prop, 'type')){
             case 'data':
-                if(isset($this->post_data[$key]) || $this->post_data[$key] !== $value){
+                if(isset($this->post_data[$key]) && $this->post_data[$key] !== $value){
                     $this->props_mutated[] = $key;
                 }
                 $this->post_data[$key] = $value;
                 break;
             case 'meta':
-                if(isset($this->post_meta[$key]) || $this->post_meta[$key] !== $value){
+                if(isset($this->post_meta[$key]) && $this->post_meta[$key] !== $value){
                     $this->props_mutated[] = $key;
                 }
                 $this->post_meta[$key] = $value;
@@ -104,9 +109,6 @@ class Base {
         $config_default = $this->getPropConfig($prop, 'default');
         return isset($value) ? $value : (isset($default) ? $default : $config_default);
     }
-    public function delete($prop){
-        $this->set($prop, null);
-    }
     public function save(){
         if($this->id){
             wp_update_post(
@@ -124,12 +126,17 @@ class Base {
         }else{
             $this->id = wp_insert_post(
                 array_merge(
-                    $this->post_data, 
-                    ['meta_input' => $this->post_meta]
+                    $this->post_data, [
+                        'post_type' => $this->post_type,
+                        'meta_input' => $this->post_meta
+                    ]
                 ),
                 false
             );
         }
+    }
+    public function destroy(){
+        return $this->id ? !!wp_delete_post($this->id, true) : false;
     }
 
     public function setProps($props=[]){

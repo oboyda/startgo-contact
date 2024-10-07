@@ -16,13 +16,13 @@ class Contact extends Base {
             'methods' => 'GET',
             'callback' => [$this, 'find']
         ]);
-        $this->addRoute(self::ROUTE_BASE, '/post', [
+        $this->addRoute(self::ROUTE_BASE, '/insert', [
             'methods' => 'POST',
-            'callback' => [$this, 'post']
+            'callback' => [$this, 'insert']
         ]);
-        $this->addRoute(self::ROUTE_BASE, '/put', [
+        $this->addRoute(self::ROUTE_BASE, '/update', [
             'methods' => 'PUT',
-            'callback' => [$this, 'put']
+            'callback' => [$this, 'update']
         ]);
         $this->addRoute(self::ROUTE_BASE, '/delete', [
             'methods' => 'DELETE',
@@ -87,30 +87,19 @@ class Contact extends Base {
         return $this->getResponse();
     }
 
-    public function post($req){
+    public function insert($req){
 
-        $params = $req->get_params();
-
-        $params = array_filter($params, function($value, $param){
-            return in_array($param, [
-                'paged',
-                //...
-            ]);
-        }, ARRAY_FILTER_USE_BOTH);
+        $params = array_merge([
+            'data' => []
+        ], $req->get_params());
 
         try {
-            $query_params = array_merge($params, [
-                'posts_per_page' => 10,
-                'post_status' => 'publish',
-                'post_type' => 'sgc_contact'
-            ]);
-            $posts_query = new \WP_Query($query_params);
+            $type_contact = new \SGC\Type\Contact();
+            $type_contact->setProps($params['data']);
+            $type_contact->set('post_status', 'publish');
+            $type_contact->save();
 
-            $this->setResponseData(array_map(function($post){
-                return (new \SGC\Type\Contact($post))->toArray();
-            }, $posts_query->posts));
-
-            $this->addResponseMeta('total', $posts_query->found_posts);
+            $this->setResponseData($type_contact->toArray());
 
         } catch(\Exception $e) {
             $this->addResponseError($e->getMessage(), $e->getCode());
@@ -119,9 +108,64 @@ class Contact extends Base {
         return $this->getResponse();
     }
 
-    public function put($req){
+    public function update($req){
+
+        $params = array_merge([
+            'id' => 0,
+            'data' => []
+        ], $req->get_params());
+
+        try {
+            if(!$params['id']){
+                throw new \Exception('Required params missing', 400);
+            }
+            if(!$params['data']){
+                throw new \Exception('No data to update', 400);
+            }
+
+            $type_contact = new \SGC\Type\Contact((int)$params['id']);
+            if(!$type_contact->getId()){
+                throw new \Exception('Type not found', 404);
+            }
+
+            $type_contact->setProps($params['data']);
+            $type_contact->save();
+
+            $this->setResponseData($type_contact->toArray());
+
+        } catch(\Exception $e) {
+            $this->addResponseError($e->getMessage(), $e->getCode());
+        }
+
+        return $this->getResponse();
     }
 
     public function delete($req){
+
+        $params = array_merge([
+            'id' => 0
+        ], $req->get_params());
+
+        try {
+            if(!$params['id']){
+                throw new \Exception('Required params missing', 400);
+            }
+
+            $type_contact = new \SGC\Type\Contact((int)$params['id']);
+            if(!$type_contact->getId()){
+                throw new \Exception('Type not found', 404);
+            }
+
+            $this->setResponseData($type_contact->toArray());
+
+            if($type_contact->destroy()){
+                $this->addResponseMeta('deleted', true);
+            }
+
+        } catch(\Exception $e) {
+            $this->addResponseError($e->getMessage(), $e->getCode());
+        }
+
+        return $this->getResponse();
     }
 }
