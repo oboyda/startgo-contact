@@ -1,0 +1,7 @@
+**/.DS_Store
+vendor
+nbproject
+node_modules
+build
+package-lock.json
+composer.lock

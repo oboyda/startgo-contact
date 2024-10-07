@@ -1,0 +1,9 @@
+{
+    "name": "startgo/contact-form",
+    "version": "0.0.1",
+    "autoload": {
+        "psr-4": {
+            "SGC\\": "src"
+        }
+    }
+}
