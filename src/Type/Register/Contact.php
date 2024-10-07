@@ -38,7 +38,7 @@ class Contact
             'hierarchical'        => false,
             'menu_position'       => 20,
             'menu_icon'           => 'dashicons-email-alt',
-            'supports'            => array('title', 'excerpt', 'custom-fields'),
+            'supports'            => array('title', 'editor', 'excerpt', 'custom-fields'),
 
             // 'show_in_rest'        => true,
             // 'rest_base'           => 'contacts',

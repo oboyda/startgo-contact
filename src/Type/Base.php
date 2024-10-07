@@ -12,17 +12,7 @@ class Base {
 
     public function __construct($post=null, $props_config=[]){
         $this->setPost($post);
-        $this->setPropsConfig(array_merge([
-                'post_title' => [
-                    'type' => 'data'
-                ],
-                'post_content' => [
-                    'type' => 'data'
-                ],
-                'post_excerpt' => [
-                    'type' => 'data'
-                ]
-            ], $props_config));
+        $this->setPropsConfig($props_config);
         $this->populateProps();
     }
 
@@ -33,11 +23,13 @@ class Base {
 
     private function setPropsConfig($props_config=[]){
         $this->props_config = array_map(function($config){
-            return $config = array_merge([
+            return array_merge([
+                'key' => null,
                 'label' => '',
                 'type' => 'data',
                 'input_type' => null,
                 'cast' => 'string',
+                'required' => false,
                 'default' => null
             ], $config);
         }, $props_config);
@@ -62,47 +54,51 @@ class Base {
     private function populateProps(){
         if(!$this->id) return;
         foreach($this->props_config as $prop => $config){
+            $key = isset($config['key']) ? $config['key'] : $prop;
             switch($config['type']){
                 case 'data':
-                    $this->post_data[$prop] = property_exists($this->post, $prop) ? $this->post[$prop] : null;
-                    $this->post_data[$prop] = $this->castProp($this->post_data[$prop], $config['cast']);
+                    $this->post_data[$key] = property_exists($this->post, $key) ? $this->post->$key : null;
+                    $this->post_data[$key] = $this->castProp($this->post_data[$key], $config['cast']);
                     break;
                 case 'meta':
-                    $this->post_meta[$prop] = get_post_meta($this->id, $prop, true);
-                    $this->post_meta[$prop] = $this->castProp($this->post_meta[$prop], $config['cast']);
+                    $this->post_meta[$key] = get_post_meta($this->id, $key, true);
+                    $this->post_meta[$key] = $this->castProp($this->post_meta[$key], $config['cast']);
                     break;
             }
         }
     }
 
-    public function getPropConfig($prop, $k=null){
-        $config = isset($props_config[$prop]) ? $props_config[$prop] : null;
-        return $k ? (($config && isset($config[$k])) ? $config[$k] : null) : $config;
+    public function getPropConfig($prop, $item=null, $default=null){
+        $prop_config = isset($this->props_config[$prop]) ? $this->props_config[$prop] : null;
+        $config = $item ? (($prop_config && isset($prop_config[$item])) ? $prop_config[$item] : null) : $prop_config;
+        return isset($config) ? $config : $default;
     }
 
     public function set($prop, $value=null){
+        $key = $this->getPropConfig($prop, 'key', $prop);
         switch($this->getPropConfig($prop, 'type')){
             case 'data':
-                if(isset($this->post_data[$prop]) || $this->post_data[$prop] !== $value){
-                    $this->props_mutated[] = $prop;
+                if(isset($this->post_data[$key]) || $this->post_data[$key] !== $value){
+                    $this->props_mutated[] = $key;
                 }
-                $this->post_data[$prop] = $value;
+                $this->post_data[$key] = $value;
                 break;
             case 'meta':
-                if(isset($this->post_meta[$prop]) || $this->post_meta[$prop] !== $value){
-                    $this->props_mutated[] = $prop;
+                if(isset($this->post_meta[$key]) || $this->post_meta[$key] !== $value){
+                    $this->props_mutated[] = $key;
                 }
-                $this->post_meta[$prop] = $value;
+                $this->post_meta[$key] = $value;
                 break;
         }
     }
     public function get($prop, $default=null){
+        $key = $this->getPropConfig($prop, 'key', $prop);
         switch($this->getPropConfig($prop, 'type')){
             case 'data':
-                $value = $this->post_data[$prop] = $value;
+                $value = $this->post_data[$key];
                 break;
             case 'meta':
-                $value = $this->post_meta[$prop] = $value;
+                $value = $this->post_meta[$key];
                 break;
         }
         $config_default = $this->getPropConfig($prop, 'default');
@@ -136,16 +132,27 @@ class Base {
         }
     }
 
+    public function setProps($props=[]){
+        foreach($props as $prop => $value){
+            $this->set($prop, $value);
+        }
+    }
+
+    public function getId(){
+        return $this->id;
+    }
     public function getPermalink(){
-        return $this->id ? $this->get_permalink($this->id) : false;
+        return $this->id ? get_permalink($this->id) : false;
     }
 
     public function toArray(){
-        return array_merge(
-            $this->post_data, 
-            $this->post_meta, [
-                'permalink' => $this->getPermalink()
-            ]
-        );
+        $data = [
+            'id' => $this->id,
+            'permalink' => $this->getPermalink()
+        ];
+        foreach(array_keys($this->props_config) as $prop){
+            $data[$prop] = $this->get($prop);
+        }
+        return $data;
     }
 }

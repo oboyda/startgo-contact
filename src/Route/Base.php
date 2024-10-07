@@ -5,9 +5,10 @@ class Base {
 
     private $routes = [];
 
-    protected $response_status = 200;
+    protected $response_code;
     protected $response_errors = [];
-    protected $response_data = [];
+    protected $response_data = null;
+    protected $response_meta = [];
 
     public function __construct(){
         add_action('rest_api_init', [$this, 'registerRoutes']);
@@ -30,8 +31,39 @@ class Base {
         ];
     }
 
-    protected function respond(){
+    protected function setResponseCode($code){
+        $this->response_code = $code;
+    }
+    protected function addResponseError($error, $code=null){
+        $this->response_errors[] = $error;
+        if(isset($code)){
+            $this->response_code = $code;
+        }
+    }
+    protected function setResponseData($data){
+        $this->response_data = $data;
+    }
+    protected function addResponseData($key, $data){
+        if(!isset($this->response_data)){
+            $this->response_data = [];
+        }
+        $this->response_data[$key] = $data;
+    }
+    protected function addResponseMeta($key, $meta){
+        $this->response_meta[$key] = $meta;
+    }
 
-        
+    protected function getResponse(){
+        if(!isset($this->response_code)){
+            $this->response_code = empty($this->response_errors) ? 200 : 400;
+        }
+        $response_body = [
+            // 'code' => $this->response_code,
+            'data' => $this->response_data,
+            'meta' => $this->response_meta
+        ];
+        return empty($this->response_errors) 
+            ? new \WP_REST_Response($response_body, $this->response_code)
+            : new \WP_Error($this->response_code, implode(' ', $this->response_errors), $response_body);
     }
 }
