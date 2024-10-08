@@ -10,7 +10,7 @@ class Contact extends Base {
                 'type' => 'data'
             ],
             'comments' => [
-                'key' => 'post_content',
+                'key' => 'post_excerpt',
                 'type' => 'data'
             ],
             'customer_first_name' => [

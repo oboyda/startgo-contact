@@ -1,0 +1,23 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "sgc/contact",
+    "title": "StartGo Contact",
+    "category": "widgets",
+    "icon": "smiley",
+    "description": "StartGo Contact Form Block.",
+    "example": {},
+    "attributes": {
+        "color": {
+            "type": "string",
+            "default": "white"
+        }
+    },
+    "supports": {
+        "html": false
+    },
+    "textdomain": "sgc",
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "viewScript": "file:./view.js"
+}
