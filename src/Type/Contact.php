@@ -21,6 +21,9 @@ class Contact extends Base {
             ],
             'customer_email' => [
                 'type' => 'meta'
+            ],
+            'customer_country' => [
+                'type' => 'meta'
             ]
         ]);
     }

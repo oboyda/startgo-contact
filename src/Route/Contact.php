@@ -91,9 +91,16 @@ class Contact extends Base {
             'data' => []
         ], $req->get_params());
 
+        $params['data'] = array_merge([
+            'customer_first_name' => '',
+            'customer_last_name' => '',
+            'customer_email' => ''
+        ], $params['data']);
+
         try {
             $type_contact = new \SGC\Type\Contact();
             $type_contact->setProps($params['data']);
+            $type_contact->set('title', sprintf(__('Contact from %s', 'sgc'), $params['data']['customer_email']));
             $type_contact->set('post_status', 'publish');
             $type_contact->save();
 

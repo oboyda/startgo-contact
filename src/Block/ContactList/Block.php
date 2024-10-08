@@ -26,11 +26,51 @@ class Block extends \SGC\Block\Base {
         parent::startRender();
         ?>
 
-        <div class="<?php echo "sgc-block--list color-{$atts['color']}" ?>" data-api_base_url="<?php echo get_rest_url(); ?>">
+        <section class="<?php echo "sgc-block--list color-{$atts['color']}" ?>" data-api_base_url="<?php echo get_rest_url(); ?>">
+            <div class="container-fluid">
+                <h3 class="block-title mb-3"><?php _e('Contacts List', 'sgc'); ?></h3>
+                <div class="items-cont"></div>
+            </div>
+        </section>
 
-            <h3 class="block-title mb-3"><?php _e('Contacts List', 'sgc'); ?></h3>
+        <?php 
+        return parent::endRender();
+    }
 
-            <div class="items-cont"></div>
+    public function renderItem($data){
+
+        parent::startRender();
+        ?>
+
+        <div class="<?php echo "list-item id-{$data['id']}" ?>">
+            <div class="row">
+                <div class="col-sm-7">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="item-meta">
+                                <div class="meta-label"><?php _e('First Name', 'sgc'); ?></div>
+                                <div class="meta-value"><?php echo $data['customer_first_name']; ?></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="item-meta">
+                                <div class="meta-label"><?php _e('Last Name', 'sgc'); ?></div>
+                                <div class="meta-value"><?php echo $data['customer_last_name']; ?></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="item-meta">
+                        <div class="meta-label"><?php _e('Email', 'sgc'); ?></div>
+                        <div class="meta-value"><?php echo $data['customer_email']; ?></div>
+                    </div>
+                </div>
+            </div>
+            <div class="item-actions py-1 text-end">
+                <button type="button" class="btn btn-secondary btn-sm"><?php _e('View more', 'sgc'); ?></button>
+                <a href="" class="btn btn-primary btn-sm"><?php _e('Edit', 'sgc'); ?></a>
+            </div>
         </div>
 
         <?php 
@@ -61,10 +101,9 @@ class Block extends \SGC\Block\Base {
 
             $this->route->setResponseData(array_map(function($post){
                 $type_contact = new \SGC\Type\Contact($post);
-                // return (new \SGC\Type\Contact($post))->toArray();
                 return [
                     'id' => $type_contact->getId(),
-                    'html' => '<div class="contact-item">'.$type_contact->get('title').'</div>'
+                    'html' => $this->renderItem($type_contact->toArray())
                 ];
             }, $posts_query->posts));
 

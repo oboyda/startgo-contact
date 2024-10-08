@@ -2,12 +2,12 @@
 /**
  * Plugin Name: StartGo Contact
  * Description: StartGo Contact Form
- * Version: 0.0.7
+ * Version: 0.0.8
  * Author: Oleksiy Boyda
  * Text Domain: sgc
  */
 
-define('SGC_VERSION', '0.0.7');
+define('SGC_VERSION', '0.0.8');
 define('SGC_ROOT', __DIR__);
 define('SGC_INDEX', plugins_url('', __FILE__));
 
