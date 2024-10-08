@@ -3,28 +3,26 @@ namespace SGC\Route;
 
 class Contact extends Base {
 
-    const ROUTE_BASE = 'sgc/v1/contact';
-
     public function __construct(){
-        parent::__construct();
+        parent::__construct('sgc/v1/contact');
 
-        $this->addRoute(self::ROUTE_BASE , '/get', [
+        $this->addRoute('/get', [
             'methods' => 'GET',
             'callback' => [$this, 'get']
         ]);
-        $this->addRoute(self::ROUTE_BASE, '/find', [
+        $this->addRoute('/find', [
             'methods' => 'GET',
             'callback' => [$this, 'find']
         ]);
-        $this->addRoute(self::ROUTE_BASE, '/insert', [
+        $this->addRoute('/insert', [
             'methods' => 'POST',
             'callback' => [$this, 'insert']
         ]);
-        $this->addRoute(self::ROUTE_BASE, '/update', [
+        $this->addRoute('/update', [
             'methods' => 'PUT',
             'callback' => [$this, 'update']
         ]);
-        $this->addRoute(self::ROUTE_BASE, '/delete', [
+        $this->addRoute('/delete', [
             'methods' => 'DELETE',
             'callback' => [$this, 'delete']
         ]);

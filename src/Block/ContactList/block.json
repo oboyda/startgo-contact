@@ -1,11 +1,11 @@
 {
     "$schema": "https://schemas.wp.org/trunk/block.json",
     "apiVersion": 3,
-    "name": "sgc/contact",
-    "title": "StartGo Contact",
+    "name": "sgc/contact-list",
+    "title": "StartGo Contacts List",
     "category": "widgets",
     "icon": "smiley",
-    "description": "StartGo Contact Form Block.",
+    "description": "StartGo Contacts List Block.",
     "example": {},
     "attributes": {
         "color": {

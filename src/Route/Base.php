@@ -3,6 +3,7 @@ namespace SGC\Route;
 
 class Base {
 
+    private $route_base = '';
     private $routes = [];
 
     protected $response_code;
@@ -10,20 +11,24 @@ class Base {
     protected $response_data = null;
     protected $response_meta = [];
 
-    public function __construct(){
+    public function __construct($route_base=''){
+        $this->route_base = $route_base;
         add_action('rest_api_init', [$this, 'registerRoutes']);
     }
 
     public function registerRoutes(){
         foreach($this->routes as $route){
-            register_rest_route($route['base'], $route['path'], $route['args']);
+            register_rest_route(
+                $this->route_base, 
+                $route['path'], 
+                $route['args']
+            );
         }
     }
 
-    protected function addRoute($base, $path, $args=[]){
-        $route_key = str_replace('/', '_', $base . $path);
+    public function addRoute($path, $args=[]){
+        $route_key = str_replace('/', '_', $this->route_base . $path);
         $this->routes[$route_key] = [
-            'base' => $base,
             'path' => $path,
             'args' => array_merge([
                 'permission_callback' => '__return_true'
@@ -31,29 +36,29 @@ class Base {
         ];
     }
 
-    protected function setResponseCode($code){
+    public function setResponseCode($code){
         $this->response_code = $code;
     }
-    protected function addResponseError($error, $code=null){
+    public function addResponseError($error, $code=null){
         $this->response_errors[] = $error;
         if(isset($code)){
             $this->response_code = $code;
         }
     }
-    protected function setResponseData($data){
+    public function setResponseData($data){
         $this->response_data = $data;
     }
-    protected function addResponseData($key, $data){
+    public function addResponseData($key, $data){
         if(!isset($this->response_data)){
             $this->response_data = [];
         }
         $this->response_data[$key] = $data;
     }
-    protected function addResponseMeta($key, $meta){
+    public function addResponseMeta($key, $meta){
         $this->response_meta[$key] = $meta;
     }
 
-    protected function getResponse(){
+    public function getResponse(){
         if(!isset($this->response_code)){
             $this->response_code = empty($this->response_errors) ? 200 : 400;
         }

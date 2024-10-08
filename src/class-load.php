@@ -16,6 +16,7 @@ Instantiate Block classes
 -------------------------
 */
 (new \SGC\Block\Contact\Block());
+(new \SGC\Block\ContactList\Block());
 
 /*
 Instantiate Metabox classes
