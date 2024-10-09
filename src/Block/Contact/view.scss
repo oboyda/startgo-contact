@@ -1,7 +1,11 @@
 .sgc-block--contact {
+
     padding: 2rem;
+    margin: 2rem auto;
     border-radius: 0.25rem;
     line-height: 1.2;
+
+    max-width: 38.75rem;
 
     &.color-white {
         background-color: white;

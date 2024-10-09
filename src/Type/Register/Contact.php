@@ -5,6 +5,7 @@ class Contact
 {
     public function __construct(){
         add_action('init', __CLASS__ . '::register');
+        add_filter('template_include', __CLASS__ . '::includeThemeTemplate');
     }
 
     static function register(){
@@ -51,5 +52,39 @@ class Contact
         ];
 
         register_post_type('sgc_contact', $args);
+    }
+
+    static function includeThemeTemplate($template){
+        global $_wp_current_template_content;
+
+        if(is_singular('sgc_contact')){
+            if(current_theme_supports('block-templates')){
+                /*
+                Wordpress does not provide flters to override a block template file.
+                Thus we make it a bit ugly
+                */
+                $_wp_current_template_content = file_get_contents(SGC_ROOT . '/templates/single-sgc_contact.html');
+                return $template;
+            }
+
+            $theme_template = locate_template([get_template_directory() . '/single-sgc_contact.php']);
+            return $theme_template ? $theme_template : SGC_ROOT . '/templates/single-sgc_contact.php';
+        }
+
+        return $template;
+    }
+
+    static function includeThemeBlockTemplate($query_result, $query, $template_type){
+
+        print_r($query);
+        exit;
+    }
+
+    static function test($block_template, $id, $template_type){
+
+        // print_r(_build_block_template_result_from_file(SGC_ROOT . '/templates/single-sgc_contact.html', $template_type));
+        // exit;
+        // print_r($template_type);
+        // exit;
     }
 }

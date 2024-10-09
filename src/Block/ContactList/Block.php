@@ -69,7 +69,7 @@ class Block extends \SGC\Block\Base {
             </div>
             <div class="item-actions py-1 text-end">
                 <button type="button" class="btn btn-secondary btn-sm"><?php _e('View more', 'sgc'); ?></button>
-                <a href="" class="btn btn-primary btn-sm"><?php _e('Edit', 'sgc'); ?></a>
+                <a href="<?php echo $data['permalink']; ?>" target="_blank" class="btn btn-primary btn-sm"><?php _e('Edit', 'sgc'); ?></a>
             </div>
         </div>
 
