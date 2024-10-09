@@ -12,10 +12,14 @@
         .item-meta {
             margin-bottom: 0.5rem;
             .meta-label {
-                font-size: 0.875rem;
+                font-size: 0.75rem;
             }
             .meta-value {
-                font-weight: bold;
+                font-weight: 600;
+                font-size: 0.875rem;
+                &.no-bold {
+                    font-weight: normal;
+                }
             }
         }
     }

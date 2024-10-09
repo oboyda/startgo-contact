@@ -25,4 +25,25 @@ class Base {
         ob_end_clean();
         return $output;
     }
+
+    protected function renderInputAtts($name, $type_object){
+
+        $atts = [];
+        $config = $type_object->getPropConfig($name);
+        
+        if(isset($config['maxlength'])){
+            $atts['maxlength'] = $config['maxlength'];
+        }
+        if(isset($config['required']) && $config['required']){
+            $atts['required'] = 'required';
+        }
+
+        $atts_items = [];
+        foreach($atts as $key => $value){
+            $atts_items[] = $key.'="'.$value.'"';
+        }
+        $atts_str = $atts_items ? ' '.implode(' ', $atts_items) : '';
+
+        return $atts_str;
+    }
 }

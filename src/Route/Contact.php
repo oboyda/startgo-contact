@@ -34,11 +34,11 @@ class Contact extends Base {
 
         try {
             if(!$id){
-                throw new \Exception('Required params missing', 400);
+                throw new \Exception(__('Please, check the required fields.', 'sgc'), 400);
             }
             $type_contact = new \SGC\Type\Contact($id);
             if(!$type_contact->getId()){
-                throw new \Exception('Type not found', 404);
+                throw new \Exception(__('Type not found', 'sgc'), 404);
             }
             $this->setResponseData($type_contact->toArray());
 
@@ -99,7 +99,7 @@ class Contact extends Base {
 
         try {
             if(!\SGC\Service\Recaptcha::verify($params['recaptcha_token'])){
-                throw new \Exception('Failed to verify reCaptcha. Please, try again.', 400);
+                throw new \Exception(__('Failed to verify reCaptcha. Please, try again.', 'sgc'), 400);
             }
 
             $type_contact = new \SGC\Type\Contact();
@@ -130,21 +130,23 @@ class Contact extends Base {
 
         try {
             if(!$params['id']){
-                throw new \Exception('Required params missing', 400);
+                throw new \Exception(__('Please, check the required fields.', 'sgc'), 400);
             }
             if(!$params['data']){
-                throw new \Exception('No data to update', 400);
+                throw new \Exception(__('No data to update', 'sgc'), 400);
             }
 
             $type_contact = new \SGC\Type\Contact((int)$params['id']);
             if(!$type_contact->getId()){
-                throw new \Exception('Type not found', 404);
+                throw new \Exception(__('Type not found', 'sgc'), 404);
             }
 
             $type_contact->setProps($params['data']);
             $type_contact->save();
 
             $this->setResponseData($type_contact->toArray());
+
+            $this->addResponseMeta('message', __('Contact details updated successfully.', 'sgc'));
 
         } catch(\Exception $e) {
             $this->addResponseError($e->getMessage(), $e->getCode());
@@ -161,12 +163,12 @@ class Contact extends Base {
 
         try {
             if(!$params['id']){
-                throw new \Exception('Required params missing', 400);
+                throw new \Exception(__('Please, check the required fields.', 'sgc'), 400);
             }
 
             $type_contact = new \SGC\Type\Contact((int)$params['id']);
             if(!$type_contact->getId()){
-                throw new \Exception('Type not found', 404);
+                throw new \Exception(__('Type not found', 'sgc'), 404);
             }
 
             $this->setResponseData($type_contact->toArray());

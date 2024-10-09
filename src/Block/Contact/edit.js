@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import './edit.scss';
+// import './edit.scss';
 
 import { SelectControl } from '@wordpress/components';
 import { useBlockProps } from '@wordpress/block-editor';

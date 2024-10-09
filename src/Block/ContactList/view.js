@@ -2,8 +2,8 @@ import './view.scss';
 
 jQuery(function($){
 
-    function fetchList(url, itemsCont){
-        $.get(url)
+    function fetchList(itemsCont){
+        $.get(`${sgcVars.apiBase}sgc/v1/block/contact-list/find`)
             .done(function(resp){
                 if(!!resp?.data?.length){
                     resp.data.forEach((item) => {
@@ -18,9 +18,12 @@ jQuery(function($){
     $(".sgc-block--list").each(function(){
 
         const block = $(this);
-        const apiBaseUrl = block.data("api_base_url");
         const itemsCont = block.find(".items-cont");
+        
+        if(!itemsCont.length){
+            return;
+        }
 
-        fetchList(`${apiBaseUrl}sgc/v1/block/contact-list/find`, itemsCont);
+        fetchList(itemsCont);
     });
 });

@@ -13,10 +13,10 @@ class Recaptcha {
                 'response' => $token
             ]
         ]);
-        // $resp_code = wp_remote_retrieve_response_code($resp);
+        $resp_code = wp_remote_retrieve_response_code($resp);
         $resp_body_raw = wp_remote_retrieve_body($resp);
         $resp_body = $resp_body_raw ? json_decode($resp_body_raw): [];
 
-        return !!$resp_body?->success;
+        return ($resp_code == 200 && !!$resp_body?->success);
     }
 }

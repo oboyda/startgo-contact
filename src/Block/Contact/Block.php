@@ -55,19 +55,25 @@ class Block extends \SGC\Block\Base {
         parent::startRender();
         ?>
 
-        <div class="<?php echo "sgc-block--contact color-{$atts['color']}" ?>" data-api_base_url="<?php echo get_rest_url(); ?>" data-post_id="<?php echo $post_id; ?>">
+        <?php if(!(current_user_can('manage_options') || !$post_id)): ?>
+        <p class="my-5 text-center"><?php _e('You are not allowed to see this content.', 'sgc'); ?></p>
+        <?php 
+        return parent::endRender();
+        endif; ?>
+
+        <div class="<?php echo "sgc-block--contact color-{$atts['color']}" ?>" data-post_id="<?php echo $post_id; ?>">
             <h3 class="block-title mb-3"><?php _e('Contact', 'sgc'); ?></h3>
             <form class="sgc-block--contact-form">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-floating mb-3">
-                            <input name="customer_first_name" type="text" class="form-control" placeholder="<?php _e('First name', 'sgc'); ?>" aria-label="<?php _e('First name', 'sgc'); ?>" value="<?php echo $type_contact->get('customer_first_name'); ?>" />
+                            <input name="customer_first_name" type="text" class="form-control" placeholder="<?php _e('First name', 'sgc'); ?>" aria-label="<?php _e('First name', 'sgc'); ?>" value="<?php echo $type_contact->get('customer_first_name'); ?>"<?php echo $this->renderInputAtts('customer_first_name', $type_contact); ?> />
                             <label><?php _e('First name', 'sgc'); ?></label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating mb-3">
-                            <input name="customer_last_name" type="text" class="form-control mb-3" placeholder="<?php _e('Last name', 'sgc'); ?>" aria-label="<?php _e('Last name', 'sgc'); ?>" value="<?php echo $type_contact->get('customer_last_name'); ?>" />
+                            <input name="customer_last_name" type="text" class="form-control mb-3" placeholder="<?php _e('Last name', 'sgc'); ?>" aria-label="<?php _e('Last name', 'sgc'); ?>" value="<?php echo $type_contact->get('customer_last_name'); ?>"<?php echo $this->renderInputAtts('customer_last_name', $type_contact); ?> />
                             <label><?php _e('Last name', 'sgc'); ?></label>
                         </div>
                     </div>
@@ -75,14 +81,14 @@ class Block extends \SGC\Block\Base {
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-floating mb-3">
-                            <input name="customer_email" type="email" class="form-control mb-3" placeholder="<?php _e('Email', 'sgc'); ?>" aria-label="<?php _e('Email', 'sgc'); ?>" value="<?php echo $type_contact->get('customer_email'); ?>" />
+                            <input name="customer_email" type="email" class="form-control mb-3" placeholder="<?php _e('Email', 'sgc'); ?>" aria-label="<?php _e('Email', 'sgc'); ?>" value="<?php echo $type_contact->get('customer_email'); ?>"<?php echo $this->renderInputAtts('customer_email', $type_contact); ?> />
                             <label><?php _e('Email', 'sgc'); ?></label>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-floating control-cont mb-3">
                             <div class="control-spinner spinner-border spinner-border-sm" role="status"></div>
-                            <select name="customer_country" class="form-control mb-3" aria-label="<?php _e('Country', 'sgc'); ?>" data-value="<?php echo $type_contact->get('customer_country'); ?>">
+                            <select name="customer_country" class="form-control mb-3" aria-label="<?php _e('Country', 'sgc'); ?>" data-value="<?php echo $type_contact->get('customer_country'); ?>"<?php echo $this->renderInputAtts('customer_country', $type_contact); ?>>
                                 <option value=""><?php _e('-- Select country', 'sgc'); ?></option>
                             </select>
                             <label><?php _e('Country', 'sgc'); ?></label>
@@ -91,7 +97,7 @@ class Block extends \SGC\Block\Base {
                 </div>
                 <div class="mb-3">
                     <div class="form-floating mb-3">
-                        <textarea name="comments" class="form-control control--comments" placeholder="<?php _e('Comments', 'sgc'); ?>"><?php echo $type_contact->get('comments'); ?></textarea>
+                        <textarea name="comments" class="form-control control--comments" placeholder="<?php _e('Comments', 'sgc'); ?>"<?php echo $this->renderInputAtts('comments', $type_contact); ?>><?php echo $type_contact->get('comments'); ?></textarea>
                         <label><?php _e('Comments', 'sgc'); ?></label>
                     </div>
                 </div>
@@ -106,7 +112,7 @@ class Block extends \SGC\Block\Base {
                         </div>
                         <div class="col-md-6">
                             <div class="mb-3 text-end">
-                                <button type="submit" class="btn btn-dark"><?php _e('Submit', 'sgc'); ?></button>
+                                <button type="submit" class="btn btn-dark"><?php echo $post_id ? __('Update', 'sgc') : __('Submit', 'sgc'); ?></button>
                             </div>
                         </div>
                     </div>

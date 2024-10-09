@@ -8,6 +8,18 @@ function sgc_register_styles(){
 }
 add_action('wp_enqueue_scripts', 'sgc_register_styles');
 
+function sgc_print_js_vars(){
+    ?>
+    <script type="text/javascript">
+        const sgcVars = {
+            apiBase: "<?php echo get_rest_url(); ?>",
+            nonce: "<?php echo wp_create_nonce('wp_rest'); ?>"
+        };
+    </script>
+    <?php 
+}
+add_action('wp_head', 'sgc_print_js_vars', 5);
+
 function sgc_register_scripts(){
     wp_register_script(
         'sgc-bootstrap', 
@@ -19,4 +31,3 @@ function sgc_register_scripts(){
     );
 }
 add_action('wp_enqueue_scripts', 'sgc_register_scripts');
-

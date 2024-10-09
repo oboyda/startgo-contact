@@ -20,18 +20,27 @@ class Block extends \SGC\Block\Base {
 
     public function render($atts){
 
-        $atts = array_merge([
-        ], $atts);
-
         parent::startRender();
         ?>
 
-        <section class="<?php echo "sgc-block--list color-{$atts['color']}" ?>" data-api_base_url="<?php echo get_rest_url(); ?>">
+        <?php if(!current_user_can('manage_options')): ?>
+        <p class="my-5 text-center"><?php _e('You are not allowed to see this content.', 'sgc'); ?></p>
+        <?php 
+        return parent::endRender();
+        endif; ?>
+
+        <div class="sgc-block--list">
             <div class="container-fluid">
-                <h3 class="block-title mb-3"><?php _e('Contacts List', 'sgc'); ?></h3>
+
+                <?php if(current_user_can('manage_options')): ?>
+                <!-- <h3 class="block-title mb-3"><?php _e('Contacts List', 'sgc'); ?></h3> -->
                 <div class="items-cont"></div>
+                <?php else: ?>
+                <p class="text-center"><?php _e('You are not allowed to see this content.', 'sgc'); ?></p>
+                <?php endif; ?>
+                
             </div>
-        </section>
+        </div>
 
         <?php 
         return parent::endRender();
@@ -44,32 +53,46 @@ class Block extends \SGC\Block\Base {
 
         <div class="<?php echo "list-item id-{$data['id']}" ?>">
             <div class="row">
-                <div class="col-sm-7">
+                <div class="col-sm-8">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="item-meta">
                                 <div class="meta-label"><?php _e('First Name', 'sgc'); ?></div>
-                                <div class="meta-value"><?php echo $data['customer_first_name']; ?></div>
+                                <div class="meta-value"><?php echo $data['customer_first_name'] ? $data['customer_first_name'] : '--'; ?></div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="item-meta">
                                 <div class="meta-label"><?php _e('Last Name', 'sgc'); ?></div>
-                                <div class="meta-value"><?php echo $data['customer_last_name']; ?></div>
+                                <div class="meta-value"><?php echo $data['customer_last_name'] ? $data['customer_last_name'] : '--'; ?></div>
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="item-meta">
+                                <div class="meta-label"><?php _e('Email', 'sgc'); ?></div>
+                                <div class="meta-value"><?php echo $data['customer_email'] ? $data['customer_email'] : '--'; ?></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <!-- <div class="item-meta">
+                                <div class="meta-label"><?php _e('Country', 'sgc'); ?></div>
+                                <div class="meta-value"><?php echo $data['customer_country'] ? $data['customer_country'] : '--'; ?></div>
+                            </div> -->
+                        </div>
+                    </div>
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-4">
                     <div class="item-meta">
-                        <div class="meta-label"><?php _e('Email', 'sgc'); ?></div>
-                        <div class="meta-value"><?php echo $data['customer_email']; ?></div>
+                        <div class="meta-label"><?php _e('Comments', 'sgc'); ?></div>
+                        <div class="meta-value no-bold"><?php echo $data['comments'] ? wp_trim_words($data['comments'], 50, '...') : '--'; ?></div>
                     </div>
                 </div>
             </div>
-            <div class="item-actions py-1 text-end">
-                <button type="button" class="btn btn-secondary btn-sm"><?php _e('View more', 'sgc'); ?></button>
-                <a href="<?php echo $data['permalink']; ?>" target="_blank" class="btn btn-primary btn-sm"><?php _e('Edit', 'sgc'); ?></a>
+            <div class="item-actions py-1">
+                <!-- <button type="button" class="btn btn-secondary btn-sm"><?php _e('View more', 'sgc'); ?></button> -->
+                <a href="<?php echo $data['permalink']; ?>" class="btn btn-primary btn-sm"><?php _e('Edit', 'sgc'); ?></a>
             </div>
         </div>
 

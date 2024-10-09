@@ -18,7 +18,7 @@ jQuery(function ($) {
         }, 5000);
     }
 
-    function submitForm(url, postId, form) {
+    function submitForm(postId, form) {
 
         const formData = new FormData(form.get(0));
         const formDataValues = (() => {
@@ -34,13 +34,14 @@ jQuery(function ($) {
         const regaptchaWidgetId = (recaptchaId && typeof recaptchaWidgets[recaptchaId] !== 'undefined') ? recaptchaWidgets[recaptchaId] : null;
         const regaptchaToken = (regaptchaWidgetId !== null && typeof grecaptcha !== 'undefined') ? grecaptcha.getResponse(regaptchaWidgetId) : null;
 
-        $.ajax(url, {
+        $.ajax(postId ? `${sgcVars.apiBase}sgc/v1/contact/update` : `${sgcVars.apiBase}sgc/v1/contact/insert`, {
             method: postId ? "PUT" : "POST",
             // data: form.serialize(),
             data: {
                 id: postId,
                 data: formDataValues,
-                recaptcha_token: regaptchaToken
+                recaptcha_token: regaptchaToken,
+                _wpnonce: sgcVars.nonce
             },
             dataType: "json"
         })
@@ -64,7 +65,7 @@ jQuery(function ($) {
             });
     }
 
-    function populateCustomerCountryInput(url, form){
+    function populateCustomerCountryInput(form){
         const contriesInput = form.find("select[name='customer_country']");
         if(!contriesInput.length){
             return;
@@ -72,7 +73,7 @@ jQuery(function ($) {
         const dataValue = contriesInput.data("value");
         contriesInput.closest(".control-cont").addClass("is-loading");
         contriesInput.addClass("is-loading");
-        $.get(url)
+        $.get(`${sgcVars.apiBase}sgc/v1/block/contact/retrieve-countries`)
             .done((resp) => {
                 if(!!resp.data?.length){
                     const options = resp.data.map((item) => {
@@ -93,16 +94,14 @@ jQuery(function ($) {
     $(".sgc-block--contact").each(function () {
 
         const block = $(this);
-        const apiBaseUrl = block.data("api_base_url");
         const postId = +block.data("post_id");
         const form = block.find("form");
 
-        populateCustomerCountryInput(`${apiBaseUrl}sgc/v1/block/contact/retrieve-countries`, form);
+        populateCustomerCountryInput(form);
 
         form.on("submit", function (e) {
             e.preventDefault();
             submitForm(
-                postId ? `${apiBaseUrl}sgc/v1/contact/update` : `${apiBaseUrl}sgc/v1/contact/insert`,
                 postId,
                 form
             );

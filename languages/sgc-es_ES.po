@@ -1,0 +1,188 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: StartGo Contact\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-09 20:12+0000\n"
+"PO-Revision-Date: 2024-10-09 20:23+0000\n"
+"Last-Translator: admin\n"
+"Language-Team: Español\n"
+"Language: es_ES\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.6.11; wp-6.6.2\n"
+"X-Domain: sgc"
+
+#: src/Block/Contact/Block.php:86
+msgid "-- Select country"
+msgstr "-- Seleccione país"
+
+#: src/Type/Register/Contact.php:18
+msgid "Add new Contact"
+msgstr "Añadir nuevo contacto"
+
+#: src/Type/Register/Contact.php:16
+msgctxt "add new on admin bar"
+msgid "Contacts"
+msgstr "Contactos"
+
+#: src/Type/Register/Contact.php:15
+msgctxt "admin menu"
+msgid "Contacts"
+msgstr "Contactos"
+
+#: src/Type/Register/Contact.php:22
+msgid "All Contacts"
+msgstr "Todos los contactos"
+
+#: src/Block/Contact/block.json:1 build/Block/Contact/block.json:1
+msgctxt "block description"
+msgid "StartGo Contact Form Block."
+msgstr "Bloque StartGo Contact."
+
+#: src/Block/ContactList/block.json:1 build/Block/ContactList/block.json:1
+msgctxt "block description"
+msgid "StartGo Contacts List Block."
+msgstr "Bloque StartGo Contacts List."
+
+#: src/Block/Contact/block.json:1 build/Block/Contact/block.json:1
+msgctxt "block title"
+msgid "StartGo Contact"
+msgstr "StartGo Contact"
+
+#: src/Block/ContactList/block.json:1 build/Block/ContactList/block.json:1
+msgctxt "block title"
+msgid "StartGo Contacts List"
+msgstr "StartGo Contacts List"
+
+#: src/Block/Contact/Block.php:94 src/Block/Contact/Block.php:95
+msgid "Comments"
+msgstr "Comentarios"
+
+#: src/Block/Contact/Block.php:59
+msgid "Contact"
+msgstr "Contacto"
+
+#: src/Metabox/Contact.php:14
+msgid "Contact details"
+msgstr "Datos de contacto"
+
+#: src/Route/Contact.php:107
+#, php-format
+msgid "Contact from %s"
+msgstr "Contacto de %s"
+
+#: src/Type/Register/Contact.php:24
+msgid "Contact parent:"
+msgstr "Contacto padre:"
+
+#: src/Type/Register/Contact.php:30
+msgid "Contact post type."
+msgstr "Tipo de post contacto"
+
+#: src/Type/Register/Contact.php:17
+msgctxt "Contact type"
+msgid "Add Contact"
+msgstr "Añadir contacto"
+
+#: src/Block/ContactList/Block.php:31
+msgid "Contacts List"
+msgstr "Lista de contactos"
+
+#: src/Block/Contact/Block.php:85 src/Block/Contact/Block.php:88
+msgid "Country"
+msgstr "País"
+
+#: src/Block/ContactList/Block.php:72
+msgid "Edit"
+msgstr "Editar"
+
+#: src/Type/Register/Contact.php:20
+msgid "Edit Contact"
+msgstr "Editar Contacto"
+
+#: src/Block/Contact/Block.php:78 src/Block/Contact/Block.php:79
+#: src/Block/ContactList/Block.php:65
+msgid "Email"
+msgstr "Email"
+
+#: src/Block/ContactList/Block.php:51
+msgid "First Name"
+msgstr "Nombre"
+
+#: src/Block/Contact/Block.php:64 src/Block/Contact/Block.php:65
+msgid "First name"
+msgstr "Nombre"
+
+#: src/Block/ContactList/Block.php:57
+msgid "Last Name"
+msgstr "Apellidos"
+
+#: src/Block/Contact/Block.php:70 src/Block/Contact/Block.php:71
+msgid "Last name"
+msgstr "Apellidos"
+
+#: src/Type/Register/Contact.php:19
+msgid "New Contact"
+msgstr "Nuevo contacto"
+
+#: src/Type/Register/Contact.php:26
+msgid "No Contacts found in trash."
+msgstr "No se han encontrado contactos."
+
+#: src/Type/Register/Contact.php:25
+msgid "No Contacts found."
+msgstr "No se han encontrado contactos en la papelera."
+
+#. Author of the plugin
+msgid "Oleksiy Boyda"
+msgstr ""
+
+#: src/Type/Register/Contact.php:13
+msgctxt "post type general name"
+msgid "Contacts"
+msgstr "Contactos"
+
+#: src/Type/Register/Contact.php:14
+msgctxt "post type singular name"
+msgid "Contact"
+msgstr "Contacto"
+
+#: src/Type/Register/Contact.php:23
+msgid "Search Contacts"
+msgstr "Buscar Contactos"
+
+#. Name of the plugin
+msgid "StartGo Contact"
+msgstr ""
+
+#. Description of the plugin
+msgid "StartGo Contact Form"
+msgstr ""
+
+#: src/Block/Contact/Block.php:109
+msgid "Submit"
+msgstr "Enviar"
+
+#: src/Route/Contact.php:114
+msgid "Thank you! We have received your contact details."
+msgstr "¡Gracias! Hemos recibido tus datos de contacto."
+
+#: src/Block/Contact/Block.php:109
+msgid "Update"
+msgstr "Actualizar"
+
+#: src/Type/Register/Contact.php:36
+msgctxt "URL slug"
+msgid "contact"
+msgstr "contacto"
+
+#: src/Type/Register/Contact.php:21
+msgid "View Contact"
+msgstr "Ver contacto"
+
+#: src/Block/ContactList/Block.php:71
+msgid "View more"
+msgstr "Ver más"

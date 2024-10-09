@@ -11,19 +11,27 @@ class Contact extends Base {
             ],
             'comments' => [
                 'key' => 'post_excerpt',
-                'type' => 'data'
+                'type' => 'data',
+                'maxlength' => 150
             ],
             'customer_first_name' => [
-                'type' => 'meta'
+                'type' => 'meta',
+                'required' => true,
+                'maxlength' => 25
             ],
             'customer_last_name' => [
-                'type' => 'meta'
+                'type' => 'meta',
+                'required' => true,
+                'maxlength' => 25
             ],
             'customer_email' => [
-                'type' => 'meta'
+                'type' => 'meta',
+                'required' => true,
+                'maxlength' => 25
             ],
             'customer_country' => [
-                'type' => 'meta'
+                'type' => 'meta',
+                'required' => true
             ]
         ]);
     }

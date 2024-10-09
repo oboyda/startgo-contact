@@ -7,12 +7,7 @@
     "icon": "smiley",
     "description": "StartGo Contacts List Block.",
     "example": {},
-    "attributes": {
-        "color": {
-            "type": "string",
-            "default": "white"
-        }
-    },
+    "attributes": {},
     "supports": {
         "html": false
     },
