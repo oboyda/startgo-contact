@@ -26,4 +26,33 @@
     .control--comments {
         min-height: 7rem !important;
     }
+
+    .status-messages p {
+        padding: 1rem;
+        margin: 2rem 0 1rem;
+        background-color: white;
+        border-radius: 0.25rem;
+
+        &.type-success {
+            color: #2f9e44;
+        }
+        &.type-error {
+            color: #f03e3e;
+        }
+    }
+
+    .control-cont {
+        position: relative;
+        .control-spinner {
+            display: none;
+            position: absolute;
+            top: 0.5em;
+            right: 0.5em;
+        }
+        &.is-loading {
+            .control-spinner {
+                display: block;
+            }
+        }
+    }
 }

@@ -26,7 +26,6 @@ class Contact extends Base {
             'methods' => 'DELETE',
             'callback' => [$this, 'delete']
         ]);
-
     }
 
     public function get($req){
@@ -88,7 +87,8 @@ class Contact extends Base {
     public function insert($req){
 
         $params = array_merge([
-            'data' => []
+            'data' => [],
+            'recaptcha_token' => ''
         ], $req->get_params());
 
         $params['data'] = array_merge([
@@ -98,6 +98,10 @@ class Contact extends Base {
         ], $params['data']);
 
         try {
+            if(!\SGC\Service\Recaptcha::verify($params['recaptcha_token'])){
+                throw new \Exception('Failed to verify reCaptcha. Please, try again.', 400);
+            }
+
             $type_contact = new \SGC\Type\Contact();
             $type_contact->setProps($params['data']);
             $type_contact->set('title', sprintf(__('Contact from %s', 'sgc'), $params['data']['customer_email']));
@@ -105,6 +109,10 @@ class Contact extends Base {
             $type_contact->save();
 
             $this->setResponseData($type_contact->toArray());
+
+            if($type_contact->getId()){
+                $this->addResponseMeta('message', __('Thank you! We have received your contact details.', 'sgc'));
+            }
 
         } catch(\Exception $e) {
             $this->addResponseError($e->getMessage(), $e->getCode());

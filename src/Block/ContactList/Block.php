@@ -10,11 +10,11 @@ class Block extends \SGC\Block\Base {
             'render_callback' => [$this, 'render']
         ]);
 
-        $this->route = new \SGC\Route\Base('sgc/v1/block/contact');
+        $this->route = new \SGC\Route\Base('sgc/v1/block/contact-list');
 
-        $this->route->addRoute('/list', [
+        $this->route->addRoute('/find', [
             'methods' => 'GET',
-            'callback' => [$this, 'list']
+            'callback' => [$this, 'find']
         ]);
     }
 
@@ -77,7 +77,7 @@ class Block extends \SGC\Block\Base {
         return parent::endRender();
     }
 
-    public function list($req){
+    public function find($req){
 
         $params = array_merge([
             'paged' => 1

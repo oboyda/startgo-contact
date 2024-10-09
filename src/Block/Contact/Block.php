@@ -3,9 +3,18 @@ namespace SGC\Block\Contact;
 
 class Block extends \SGC\Block\Base {
 
+    private $route;
+
     public function __construct(){
         parent::__construct('Contact', [
             'render_callback' => [$this, 'render']
+        ]);
+
+        $this->route = new \SGC\Route\Base('sgc/v1/block/contact');
+
+        $this->route->addRoute('/retrieve-countries', [
+            'methods' => 'GET',
+            'callback' => [$this, 'retrieveCountries']
         ]);
     }
 
@@ -39,6 +48,10 @@ class Block extends \SGC\Block\Base {
             'color' => 'white'
         ], $atts);
 
+        $recaptcha_key = '6LcgdVwqAAAAAB7VfixakTREkze985G9tBZtSZmh';
+        $recaptcha_id = uniqid('sgc_recaptcha_');
+        $has_recaptcha = (!$post_id && $recaptcha_key);
+
         parent::startRender();
         ?>
 
@@ -67,9 +80,10 @@ class Block extends \SGC\Block\Base {
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-floating mb-3">
-                            <select name="customer_country" class="form-control mb-3" aria-label="<?php _e('Country', 'sgc'); ?>">
-                                <option value="">--</option>
+                        <div class="form-floating control-cont mb-3">
+                            <div class="control-spinner spinner-border spinner-border-sm" role="status"></div>
+                            <select name="customer_country" class="form-control mb-3" aria-label="<?php _e('Country', 'sgc'); ?>" data-value="<?php echo $type_contact->get('customer_country'); ?>">
+                                <option value=""><?php _e('-- Select country', 'sgc'); ?></option>
                             </select>
                             <label><?php _e('Country', 'sgc'); ?></label>
                         </div>
@@ -82,13 +96,41 @@ class Block extends \SGC\Block\Base {
                     </div>
                 </div>
                 <div class="mb-3 mt-4">
-                    <button type="submit" class="btn btn-dark"><?php _e('Submit', 'sgc'); ?></button>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <?php if($has_recaptcha && $recaptcha_key): ?>
+                            <div class="mb-3">
+                                <div id="<?php echo $recaptcha_id; ?>" class="sgc-recaptcha" data-sitekey="<?php echo $recaptcha_key; ?>"></div>
+                            </div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3 text-end">
+                                <button type="submit" class="btn btn-dark"><?php _e('Submit', 'sgc'); ?></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="status-cont"></div>
+                <div class="status-messages"></div>
             </form>
         </div>
 
         <?php 
         return parent::endRender();
+    }
+
+    public function retrieveCountries($req){
+
+        try {
+            $countries = \SGC\Service\Countries::retrieveList();
+
+            $this->route->setResponseData($countries);
+            $this->route->addResponseMeta('total', count($countries));
+
+        } catch(\Exception $e) {
+            $this->route->addResponseError($e->getMessage(), $e->getCode());
+        }
+
+        return $this->route->getResponse();
     }
 }

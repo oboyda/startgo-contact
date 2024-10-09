@@ -21,6 +21,6 @@ jQuery(function($){
         const apiBaseUrl = block.data("api_base_url");
         const itemsCont = block.find(".items-cont");
 
-        fetchList(`${apiBaseUrl}sgc/v1/block/contact/list`, itemsCont);
+        fetchList(`${apiBaseUrl}sgc/v1/block/contact-list/find`, itemsCont);
     });
 });

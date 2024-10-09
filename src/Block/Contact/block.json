@@ -18,7 +18,7 @@
     },
     "textdomain": "sgc",
     "style": ["sgc-bootstrap"],
-    "script": ["sgc-bootstrap", "jquery"],
+    "script": ["sgc-bootstrap", "sgc-recaptcha", "jquery"],
     "editorScript": "file:./index.js",
     "viewScript": "file:./view.js",
     "viewStyle": "file:./view.css"
