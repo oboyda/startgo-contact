@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: StartGo Contact\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-09 20:12+0000\n"
-"PO-Revision-Date: 2024-10-10 10:22+0000\n"
+"PO-Revision-Date: 2024-10-10 08:56+0000\n"
 "Last-Translator: admin\n"
 "Language-Team: Español\n"
 "Language: es_ES\n"
@@ -60,7 +60,7 @@ msgstr "StartGo Contacts List"
 #: src/Block/Contact/Block.php:112 src/Block/Contact/Block.php:114
 #: src/Block/ContactList/Block.php:88
 msgid "Comments"
-msgstr "Sugerencias"
+msgstr "Comentarios"
 
 #: src/Block/Contact/Block.php:65
 msgid "Contact"
@@ -192,7 +192,7 @@ msgstr "Enviar"
 
 #: src/Route/Contact.php:125
 msgid "Thank you! We have received your contact details."
-msgstr "Gracias por su sugerencia!"
+msgstr "¡Gracias! Hemos recibido tus datos de contacto."
 
 #: src/Route/Contact.php:45 src/Route/Contact.php:156 src/Route/Contact.php:194
 msgid "Type not found"
