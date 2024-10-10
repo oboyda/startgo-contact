@@ -21,24 +21,17 @@ class Block extends \SGC\Block\Base {
     public function render($atts){
 
         parent::startRender();
-        ?>
 
-        <?php if(!current_user_can('manage_options')): ?>
-        <p class="my-5 text-center"><?php _e('You are not allowed to see this content.', 'sgc'); ?></p>
-        <?php 
-        return parent::endRender();
-        endif; ?>
+        if(!current_user_can('manage_options')):
+            parent::printNotAllowedContent();
+            return parent::endRender();
+        endif;
+        ?>
 
         <div class="sgc-block--list">
             <div class="container-fluid">
-
-                <?php if(current_user_can('manage_options')): ?>
                 <!-- <h3 class="block-title mb-3"><?php _e('Contacts List', 'sgc'); ?></h3> -->
                 <div class="items-cont"></div>
-                <?php else: ?>
-                <p class="text-center"><?php _e('You are not allowed to see this content.', 'sgc'); ?></p>
-                <?php endif; ?>
-                
             </div>
         </div>
 
@@ -114,6 +107,10 @@ class Block extends \SGC\Block\Base {
         }, ARRAY_FILTER_USE_BOTH);
 
         try {
+            if(!current_user_can('manage_options')){
+                throw new \Exception(__('Not authorized', 'sgc'), 401);
+            }
+
             $query_params = array_merge($params, [
                 'posts_per_page' => 10,
                 'post_status' => 'publish',

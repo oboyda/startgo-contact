@@ -34,14 +34,14 @@ jQuery(function ($) {
         const regaptchaWidgetId = (recaptchaId && typeof recaptchaWidgets[recaptchaId] !== 'undefined') ? recaptchaWidgets[recaptchaId] : null;
         const regaptchaToken = (regaptchaWidgetId !== null && typeof grecaptcha !== 'undefined') ? grecaptcha.getResponse(regaptchaWidgetId) : null;
 
-        $.ajax(postId ? `${sgcVars.apiBase}sgc/v1/contact/update` : `${sgcVars.apiBase}sgc/v1/contact/insert`, {
+        $.ajax(postId ? `${sgcVars.apiBase}sgc/v1/contact/update?_wpnonce=${sgcVars.nonce}` : `${sgcVars.apiBase}sgc/v1/contact/insert?_wpnonce=${sgcVars.nonce}`, {
             method: postId ? "PUT" : "POST",
             // data: form.serialize(),
             data: {
                 id: postId,
                 data: formDataValues,
                 recaptcha_token: regaptchaToken,
-                _wpnonce: sgcVars.nonce
+                // _wpnonce: sgcVars.nonce
             },
             dataType: "json"
         })

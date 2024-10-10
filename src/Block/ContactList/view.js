@@ -3,7 +3,7 @@ import './view.scss';
 jQuery(function($){
 
     function fetchList(itemsCont){
-        $.get(`${sgcVars.apiBase}sgc/v1/block/contact-list/find`)
+        $.get(`${sgcVars.apiBase}sgc/v1/block/contact-list/find?_wpnonce=${sgcVars.nonce}`)
             .done(function(resp){
                 if(!!resp?.data?.length){
                     resp.data.forEach((item) => {

@@ -9,7 +9,7 @@ class Base {
     protected $post_data = [];
     protected $post_meta = [];
     protected $props_config = [];
-    protected $props_mutated = [];
+    protected $keys_mutated = [];
 
     public function __construct($post=null, $post_type='post', $props_config=[]){
         $this->setPost($post);
@@ -34,8 +34,8 @@ class Base {
                 'key' => null,
                 'label' => '',
                 'type' => 'data',
-                'input_type' => null,
-                'cast' => 'string',
+                'input_type' => 'text',
+                'data_type' => 'string', // 'string', 'integer', 'array_integer', 'float', 'array_float', 'bool', 'array_bool'
                 'required' => false,
                 'default' => null
             ], $config);
@@ -53,6 +53,10 @@ class Base {
             case 'array_float':
                 $value = is_array($value) ? array_map(function($item){ return $this->castProp($value, 'float'); }, $value) : [];
                 break;
+            case 'bool':
+                $value = boolval($value);
+            case 'array_bool':
+                $value = is_array($value) ? array_map(function($item){ return $this->castProp($value, 'bool'); }, $value) : [];
         }
         return $value;
     }
@@ -63,11 +67,11 @@ class Base {
             switch($config['type']){
                 case 'data':
                     $this->post_data[$key] = property_exists($this->post, $key) ? $this->post->$key : null;
-                    $this->post_data[$key] = $this->castProp($this->post_data[$key], $config['cast']);
+                    $this->post_data[$key] = $this->castProp($this->post_data[$key], $config['data_type']);
                     break;
                 case 'meta':
                     $this->post_meta[$key] = get_post_meta($this->id, $key, true);
-                    $this->post_meta[$key] = $this->castProp($this->post_meta[$key], $config['cast']);
+                    $this->post_meta[$key] = $this->castProp($this->post_meta[$key], $config['data_type']);
                     break;
             }
         }
@@ -83,14 +87,14 @@ class Base {
         $key = $this->getPropConfig($prop, 'key', $prop);
         switch($this->getPropConfig($prop, 'type')){
             case 'data':
-                if(isset($this->post_data[$key]) && $this->post_data[$key] !== $value){
-                    $this->props_mutated[] = $key;
+                if(!isset($this->post_data[$key]) || $this->post_data[$key] !== $value){
+                    $this->keys_mutated[] = $key;
                 }
                 $this->post_data[$key] = $value;
                 break;
             case 'meta':
-                if(isset($this->post_meta[$key]) && $this->post_meta[$key] !== $value){
-                    $this->props_mutated[] = $key;
+                if(!isset($this->post_meta[$key]) || $this->post_meta[$key] !== $value){
+                    $this->keys_mutated[] = $key;
                 }
                 $this->post_meta[$key] = $value;
                 break;
@@ -113,11 +117,11 @@ class Base {
         if($this->id){
             wp_update_post(
                 array_merge(
-                    array_filter($this->post_data, function($item, $p){
-                        return in_array($p, $this->props_mutated);
+                    array_filter($this->post_data, function($item, $k){
+                        return in_array($k, $this->keys_mutated);
                     }, ARRAY_FILTER_USE_BOTH), 
-                    ['meta_input' => array_filter($this->post_meta, function($item, $p){
-                        return in_array($p, $this->props_mutated);
+                    ['meta_input' => array_filter($this->post_meta, function($item, $k){
+                        return in_array($k, $this->keys_mutated);
                     }, ARRAY_FILTER_USE_BOTH)],
                     ['ID' => $this->id]
                 ),
@@ -143,6 +147,47 @@ class Base {
         foreach($props as $prop => $value){
             $this->set($prop, $value);
         }
+    }
+
+    public function validateProps($values, $return_status=false, $include=[], $ignore=[]){
+
+        $res = [
+            'status' => true,
+            'invalid' => []
+        ];
+
+        foreach($this->props_config as $prop => $config){
+
+            if($include && !in_array($prop, $include)){
+                continue;
+            }
+            if($ignore && in_array($prop, $ignore)){
+                continue;
+            }
+
+            $value = isset($values[$prop]) ? $values[$prop] : null;
+
+            if($config['required'] && (!isset($value) || $value === '')){
+                $res['invalid'][] = $prop;
+            }
+
+            switch($config['input_type']){
+                case 'email':
+                    if($value && !filter_var($value, FILTER_VALIDATE_EMAIL)){
+                        $res['invalid'][] = $prop;
+                    }
+                    break;
+            }
+
+            // Validate string length
+            if($value && isset($config['maxlength']) && is_string($value) && strlen($value) > $config['maxlength']){
+                $res['invalid'][] = $prop;
+            }
+        }
+
+        $res['status'] = empty($res['invalid']);
+
+        return $return_status ? $res['status'] : $res;
     }
 
     public function getId(){

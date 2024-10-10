@@ -33,6 +33,10 @@ class Contact extends Base {
         $id = (int)$req->get_param('id');
 
         try {
+            if(!current_user_can('manage_options')){
+                throw new \Exception(__('Not authorized', 'sgc'), 401);
+            }
+
             if(!$id){
                 throw new \Exception(__('Please, check the required fields.', 'sgc'), 400);
             }
@@ -63,6 +67,10 @@ class Contact extends Base {
         }, ARRAY_FILTER_USE_BOTH);
 
         try {
+            if(!current_user_can('manage_options')){
+                throw new \Exception(__('Not authorized', 'sgc'), 401);
+            }
+
             $query_params = array_merge($params, [
                 'posts_per_page' => 10,
                 'post_status' => 'publish',
@@ -92,8 +100,6 @@ class Contact extends Base {
         ], $req->get_params());
 
         $params['data'] = array_merge([
-            'customer_first_name' => '',
-            'customer_last_name' => '',
             'customer_email' => ''
         ], $params['data']);
 
@@ -103,10 +109,21 @@ class Contact extends Base {
             }
 
             $type_contact = new \SGC\Type\Contact();
+
+            if(!$type_contact->validateProps($params['data'], true)){
+                throw new \Exception(__('Please, check the required fields.', 'sgc'), 400);
+            }
+
             $type_contact->setProps($params['data']);
             $type_contact->set('title', sprintf(__('Contact from %s', 'sgc'), $params['data']['customer_email']));
             $type_contact->set('post_status', 'publish');
             $type_contact->save();
+            
+            // Update slug
+            if($type_contact->getId()){
+                $type_contact->set('slug', $type_contact->getId());
+                $type_contact->save();
+            }
 
             $this->setResponseData($type_contact->toArray());
 
@@ -129,6 +146,10 @@ class Contact extends Base {
         ], $req->get_params());
 
         try {
+            if(!current_user_can('manage_options')){
+                throw new \Exception(__('Not authorized', 'sgc'), 401);
+            }
+
             if(!$params['id']){
                 throw new \Exception(__('Please, check the required fields.', 'sgc'), 400);
             }
@@ -139,6 +160,10 @@ class Contact extends Base {
             $type_contact = new \SGC\Type\Contact((int)$params['id']);
             if(!$type_contact->getId()){
                 throw new \Exception(__('Type not found', 'sgc'), 404);
+            }
+
+            if(!$type_contact->validateProps($params['data'], true)){
+                throw new \Exception(__('Please, check the required fields.', 'sgc'), 400);
             }
 
             $type_contact->setProps($params['data']);
@@ -162,6 +187,10 @@ class Contact extends Base {
         ], $req->get_params());
 
         try {
+            if(!current_user_can('manage_options')){
+                throw new \Exception(__('Not authorized', 'sgc'), 401);
+            }
+
             if(!$params['id']){
                 throw new \Exception(__('Please, check the required fields.', 'sgc'), 400);
             }

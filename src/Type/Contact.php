@@ -9,6 +9,10 @@ class Contact extends Base {
                 'key' => 'post_title',
                 'type' => 'data'
             ],
+            'slug' => [
+                'key' => 'post_name',
+                'type' => 'data'
+            ],
             'comments' => [
                 'key' => 'post_excerpt',
                 'type' => 'data',
@@ -17,17 +21,17 @@ class Contact extends Base {
             'customer_first_name' => [
                 'type' => 'meta',
                 'required' => true,
-                'maxlength' => 25
+                'maxlength' => 50
             ],
             'customer_last_name' => [
                 'type' => 'meta',
                 'required' => true,
-                'maxlength' => 25
+                'maxlength' => 50
             ],
             'customer_email' => [
                 'type' => 'meta',
                 'required' => true,
-                'maxlength' => 25
+                'maxlength' => 50
             ],
             'customer_country' => [
                 'type' => 'meta',

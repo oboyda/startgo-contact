@@ -2,10 +2,19 @@
 namespace SGC\Service;
 
 class Recaptcha {
+
+    static function getSiteKey(){
+        return '6LcgdVwqAAAAAB7VfixakTREkze985G9tBZtSZmh';
+    }
+    static function getSecretKey(){
+        return '6LcgdVwqAAAAAPVbzrpUwV9HEjHVpvxwDHe9AWuh';
+    }
     
     static function verify($token){
 
-        $secretKey = '6LcgdVwqAAAAAPVbzrpUwV9HEjHVpvxwDHe9AWuh';
+        $secretKey = self::getSecretKey();
+
+        if(!$secretKey) return true;
 
         $resp = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', [
             'body' => [

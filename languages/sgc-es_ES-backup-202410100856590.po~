@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: StartGo Contact\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-10-09 20:12+0000\n"
-"PO-Revision-Date: 2024-10-10 08:56+0000\n"
+"PO-Revision-Date: 2024-10-09 20:23+0000\n"
 "Last-Translator: admin\n"
 "Language-Team: Español\n"
 "Language: es_ES\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Loco-Version: 2.6.11; wp-6.6.2\n"
 "X-Domain: sgc"
 
-#: src/Block/Contact/Block.php:101
+#: src/Block/Contact/Block.php:86
 msgid "-- Select country"
 msgstr "-- Seleccione país"
 
@@ -57,20 +57,19 @@ msgctxt "block title"
 msgid "StartGo Contacts List"
 msgstr "StartGo Contacts List"
 
-#: src/Block/Contact/Block.php:112 src/Block/Contact/Block.php:114
-#: src/Block/ContactList/Block.php:88
+#: src/Block/Contact/Block.php:94 src/Block/Contact/Block.php:95
 msgid "Comments"
 msgstr "Comentarios"
 
-#: src/Block/Contact/Block.php:65
+#: src/Block/Contact/Block.php:59
 msgid "Contact"
 msgstr "Contacto"
 
-#: src/Route/Contact.php:168
-msgid "Contact details updated successfully."
-msgstr "Datos de contacto actualizados con éxito."
+#: src/Metabox/Contact.php:14
+msgid "Contact details"
+msgstr "Datos de contacto"
 
-#: src/Route/Contact.php:118
+#: src/Route/Contact.php:107
 #, php-format
 msgid "Contact from %s"
 msgstr "Contacto de %s"
@@ -88,16 +87,15 @@ msgctxt "Contact type"
 msgid "Add Contact"
 msgstr "Añadir contacto"
 
-#: src/Block/ContactList/Block.php:36
+#: src/Block/ContactList/Block.php:31
 msgid "Contacts List"
 msgstr "Lista de contactos"
 
-#: src/Block/Contact/Block.php:100 src/Block/Contact/Block.php:104
-#: src/Block/ContactList/Block.php:80
+#: src/Block/Contact/Block.php:85 src/Block/Contact/Block.php:88
 msgid "Country"
 msgstr "País"
 
-#: src/Block/ContactList/Block.php:95
+#: src/Block/ContactList/Block.php:72
 msgid "Edit"
 msgstr "Editar"
 
@@ -105,28 +103,24 @@ msgstr "Editar"
 msgid "Edit Contact"
 msgstr "Editar Contacto"
 
-#: src/Block/Contact/Block.php:90 src/Block/Contact/Block.php:92
-#: src/Block/ContactList/Block.php:74
+#: src/Block/Contact/Block.php:78 src/Block/Contact/Block.php:79
+#: src/Block/ContactList/Block.php:65
 msgid "Email"
 msgstr "Email"
 
-#: src/Route/Contact.php:108
-msgid "Failed to verify reCaptcha. Please, try again."
-msgstr "No se ha podido verificar reCaptcha. Por favor, inténtelo de nuevo."
-
-#: src/Block/ContactList/Block.php:60
+#: src/Block/ContactList/Block.php:51
 msgid "First Name"
 msgstr "Nombre"
 
-#: src/Block/Contact/Block.php:70 src/Block/Contact/Block.php:72
+#: src/Block/Contact/Block.php:64 src/Block/Contact/Block.php:65
 msgid "First name"
 msgstr "Nombre"
 
-#: src/Block/ContactList/Block.php:66
+#: src/Block/ContactList/Block.php:57
 msgid "Last Name"
 msgstr "Apellidos"
 
-#: src/Block/Contact/Block.php:79 src/Block/Contact/Block.php:81
+#: src/Block/Contact/Block.php:70 src/Block/Contact/Block.php:71
 msgid "Last name"
 msgstr "Apellidos"
 
@@ -142,23 +136,9 @@ msgstr "No se han encontrado contactos."
 msgid "No Contacts found."
 msgstr "No se han encontrado contactos en la papelera."
 
-#: src/Route/Contact.php:151
-msgid "No data to update"
-msgstr "No hay datos que actualizar."
-
-#: src/Route/Contact.php:37 src/Route/Contact.php:71 src/Route/Contact.php:144
-#: src/Route/Contact.php:185 src/Block/ContactList/Block.php:118
-msgid "Not authorized"
-msgstr "No autorizado"
-
 #. Author of the plugin
 msgid "Oleksiy Boyda"
 msgstr ""
-
-#: src/Route/Contact.php:41 src/Route/Contact.php:114 src/Route/Contact.php:148
-#: src/Route/Contact.php:160 src/Route/Contact.php:189
-msgid "Please, check the required fields."
-msgstr "Por favor, verifíque los campos requeridos."
 
 #: src/Type/Register/Contact.php:13
 msgctxt "post type general name"
@@ -174,10 +154,6 @@ msgstr "Contacto"
 msgid "Search Contacts"
 msgstr "Buscar Contactos"
 
-#: src/acf-options.php:5 src/acf-options.php:6
-msgid "SGC Options"
-msgstr ""
-
 #. Name of the plugin
 msgid "StartGo Contact"
 msgstr ""
@@ -186,19 +162,15 @@ msgstr ""
 msgid "StartGo Contact Form"
 msgstr ""
 
-#: src/Block/Contact/Block.php:131
+#: src/Block/Contact/Block.php:109
 msgid "Submit"
 msgstr "Enviar"
 
-#: src/Route/Contact.php:125
+#: src/Route/Contact.php:114
 msgid "Thank you! We have received your contact details."
 msgstr "¡Gracias! Hemos recibido tus datos de contacto."
 
-#: src/Route/Contact.php:45 src/Route/Contact.php:156 src/Route/Contact.php:194
-msgid "Type not found"
-msgstr "Tipo no encontrado"
-
-#: src/Block/Contact/Block.php:131
+#: src/Block/Contact/Block.php:109
 msgid "Update"
 msgstr "Actualizar"
 
@@ -211,11 +183,6 @@ msgstr "contacto"
 msgid "View Contact"
 msgstr "Ver contacto"
 
-#: src/Block/ContactList/Block.php:94
+#: src/Block/ContactList/Block.php:71
 msgid "View more"
 msgstr "Ver más"
-
-#: src/Block/Contact/Block.php:59 src/Block/ContactList/Block.php:27
-#: src/Block/ContactList/Block.php:39
-msgid "You are not allowed to see this content."
-msgstr "No está autorizado para visualizar este contenido."

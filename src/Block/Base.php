@@ -46,4 +46,10 @@ class Base {
 
         return $atts_str;
     }
+
+    protected function printNotAllowedContent(){
+        ?>
+        <p class="my-5 text-center"><?php _e('You are not allowed to see this content.', 'sgc'); ?></p>
+        <?php 
+    }
 }
