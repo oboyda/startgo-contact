@@ -34,6 +34,9 @@ jQuery(function ($) {
         const regaptchaWidgetId = (recaptchaId && typeof recaptchaWidgets[recaptchaId] !== 'undefined') ? recaptchaWidgets[recaptchaId] : null;
         const regaptchaToken = (regaptchaWidgetId !== null && typeof grecaptcha !== 'undefined') ? grecaptcha.getResponse(regaptchaWidgetId) : null;
 
+        const submitBtn = form.find("button[type='submit']");
+        submitBtn.prop("disabled", true);
+
         $.ajax(postId ? `${sgcVars.apiBase}sgc/v1/contact/update?_wpnonce=${sgcVars.nonce}` : `${sgcVars.apiBase}sgc/v1/contact/insert?_wpnonce=${sgcVars.nonce}`, {
             method: postId ? "PUT" : "POST",
             // data: form.serialize(),
@@ -62,6 +65,7 @@ jQuery(function ($) {
                 if(regaptchaWidgetId !== null && typeof grecaptcha !== 'undefined'){
                     grecaptcha.reset(regaptchaWidgetId);
                 }
+                submitBtn.prop("disabled", false);
             });
     }
 
